@@ -29,5 +29,9 @@ form button {
   background-color: blueviolet;
 }
 
-form input {
+.tasks {
+  background-color: white;
+  display: flex;
+  height: 30px;
+  justify-content: space-between;
 }

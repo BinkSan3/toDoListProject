@@ -2,24 +2,25 @@ import "./App.css";
 import { useState } from "react";
 
 function App() {
-  const [list, setList] = useState(["thing1", "thing2"]);
+  const [list, setList] = useState([]);
   const [inputText, setInputText] = useState("");
-  const [archive, setArchive] = useState(["thing x"]);
+  const [archive, setArchive] = useState([]);
   const [archiveVisibility, setArchiveVisibility] = useState(false);
-  const [editing, setEditing] = useState(false);
 
   const toggleArchive = () => {
     setArchiveVisibility(!archiveVisibility);
   };
   const toggleEdit = (thisEdit) => {
-    setEditing(!editing);
+    let storedList = [...list];
+    storedList[thisEdit].editing = !storedList[thisEdit].editing;
+    setList(storedList);
   };
 
   const addHandler = (event) => {
     event.preventDefault();
 
     let storedList = [...list];
-    storedList.push(inputText);
+    storedList.push({ task: inputText, editing: false });
     setList(storedList);
 
     setInputText("");
@@ -28,7 +29,8 @@ function App() {
   const removeHandler = (position) => {
     let storedList = [...list];
     let storedArchive = [...archive];
-    storedArchive.push(storedList.splice(position, 1));
+    storedArchive.push(storedList.splice(position, 1)[0]);
+    console.log(storedArchive);
     setList(storedList);
     setArchive(storedArchive);
   };
@@ -40,6 +42,18 @@ function App() {
 
   const changeHandler = (event) => {
     setInputText(event.target.value);
+  };
+
+  const handleKeyPress = (event, index) => {
+    if (event.key === "Enter") {
+      toggleEdit(index);
+    }
+  };
+
+  const updateHandler = (event, index) => {
+    let storedList = [...list];
+    storedList[index].task = event.target.value;
+    setList(storedList);
   };
 
   // const editHandler = () => {
@@ -58,13 +72,23 @@ function App() {
         </form>
         {list.map((toDo, index) => {
           return (
-            <p key={index}>
-              {toDo}
+            <div key={index} className="tasks">
+              {toDo.editing ? (
+                <input
+                  type="text"
+                  value={toDo.task}
+                  onChange={(e) => updateHandler(e, index)}
+                  onKeyDown={(e) => handleKeyPress(e, index)}
+                ></input>
+              ) : (
+                <p key={index}>{toDo.task}</p>
+              )}
+
               <button onClick={() => toggleEdit(index)}>
-                {editing ? "Save" : "Edit"}
+                {toDo.editing ? "Save" : "Edit"}
               </button>
               <button onClick={() => removeHandler(index)}>-</button>
-            </p>
+            </div>
           );
         })}
       </div>
@@ -77,8 +101,7 @@ function App() {
           {archive.map((toDo, index) => {
             return (
               <div key={index}>
-                <p>{toDo}</p>
-                <button></button>
+                <p>{toDo.task}</p>
                 <button onClick={() => deletePerm(index)}>-</button>
               </div>
             );
