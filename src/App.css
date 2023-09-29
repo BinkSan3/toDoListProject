@@ -1,37 +1,94 @@
+body {
+  background-blend-mode: soft-light;
+  background-color: cadetblue;
+}
 .App {
   display: flex;
+  margin: 50px 0px;
+  justify-content: flex-start;
 }
 
-.toDoList {
+h2 {
+  text-align: center;
+  background-color: bisque;
+  border-radius: 5px;
+  margin-top: 5px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#archiveButton {
+  transform: rotate(90deg);
+  width: 100px;
+  height: 50px;
+  margin-top: 25px;
+  background-color: mediumslateblue;
+}
+
+.toDoList,
+#archive {
   width: 300px;
   height: 550px;
-  background-color: bisque;
+  background-color: maroon;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  border-radius: 5px;
+
   font-size: larger;
+  padding: 4px;
 }
 
 p {
-  margin: 2px;
+  margin: 0px;
   padding: 2px;
-  width: fit-content;
+  width: 100%;
+  background-color: aliceblue;
 }
 
 form > * {
   height: 30px;
   font-size: large;
   box-sizing: border-box;
-  border: none;
+  width: 100%;
 }
-form button {
-  width: 30px;
-  background-color: blueviolet;
+button {
+  border: none;
+  margin: 1px;
+}
+form {
+  display: flex;
+  justify-content: space-between;
 }
 
 .tasks {
-  background-color: white;
   display: flex;
-  height: 30px;
   justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.tasks div {
+  display: flex;
+}
+
+.delete {
+  background-color: red;
+}
+.edit {
+  background-color: blueviolet;
+}
+.addBack {
+  background-color: green;
+}
+.submit {
+  background-color: blue;
+}
+
+.form > *,
+button {
+  height: 30px;
+  width: 30px;
+  border-radius: 5px;
 }

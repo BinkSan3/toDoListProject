@@ -34,6 +34,15 @@ function App() {
     setList(storedList);
     setArchive(storedArchive);
   };
+  const bringBackHandler = (position) => {
+    let storedList = [...list];
+    let storedArchive = [...archive];
+    storedList.push(storedArchive.splice(position, 1)[0]);
+    console.log(storedArchive);
+    setList(storedList);
+    setArchive(storedArchive);
+  };
+
   const deletePerm = (position) => {
     let storedArchive = [...archive];
     storedArchive.splice(position, 1);
@@ -66,9 +75,13 @@ function App() {
   return (
     <div className="App">
       <div className="toDoList">
+        <h2>TO DO LIST</h2>
+
         <form onSubmit={addHandler}>
           <input type="text" value={inputText} onChange={changeHandler}></input>
-          <button type="submit">+</button>
+          <button type="submit" className="submit">
+            +
+          </button>
         </form>
         {list.map((toDo, index) => {
           return (
@@ -83,26 +96,39 @@ function App() {
               ) : (
                 <p key={index}>{toDo.task}</p>
               )}
-
-              <button onClick={() => toggleEdit(index)}>
-                {toDo.editing ? "Save" : "Edit"}
-              </button>
-              <button onClick={() => removeHandler(index)}>-</button>
+              <div>
+                <button onClick={() => toggleEdit(index)} className="edit">
+                  {toDo.editing ? "Save" : "Edit"}
+                </button>
+                <button onClick={() => removeHandler(index)} className="delete">
+                  -
+                </button>
+              </div>
             </div>
           );
         })}
       </div>
-      <button onClick={toggleArchive}>
-        {archiveVisibility ? "Hide Archive" : "Show Archive"}
+      <button onClick={toggleArchive} id="archiveButton">
+        <span>{archiveVisibility ? "Hide Archive" : "Show Archive"}</span>
       </button>
       {archiveVisibility && (
         <div id="archive">
           <h2>ARCHIVED</h2>
           {archive.map((toDo, index) => {
             return (
-              <div key={index}>
+              <div key={index} className="tasks">
                 <p>{toDo.task}</p>
-                <button onClick={() => deletePerm(index)}>-</button>
+                <div>
+                  <button
+                    onClick={() => bringBackHandler(index)}
+                    className="addBack"
+                  >
+                    +
+                  </button>
+                  <button onClick={() => deletePerm(index)} className="delete">
+                    -
+                  </button>
+                </div>
               </div>
             );
           })}
