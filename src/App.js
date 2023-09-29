@@ -6,10 +6,13 @@ function App() {
   const [inputText, setInputText] = useState("");
   const [archive, setArchive] = useState([]);
   const [archiveVisibility, setArchiveVisibility] = useState(false);
+  const [isTransformed, setIsTransformed] = useState(false);
 
   const toggleArchive = () => {
+    setIsTransformed(!isTransformed);
     setArchiveVisibility(!archiveVisibility);
   };
+
   const toggleEdit = (thisEdit) => {
     let storedList = [...list];
     storedList[thisEdit].editing = !storedList[thisEdit].editing;
@@ -74,43 +77,57 @@ function App() {
 
   return (
     <div className="App">
-      <div className="toDoList">
-        <h2>TO DO LIST</h2>
+      <div className="flexButton">
+        <div className="toDoList">
+          <h2>TO DO LIST</h2>
 
-        <form onSubmit={addHandler}>
-          <input type="text" value={inputText} onChange={changeHandler}></input>
-          <button type="submit" className="submit">
-            +
-          </button>
-        </form>
-        {list.map((toDo, index) => {
-          return (
-            <div key={index} className="tasks">
-              {toDo.editing ? (
-                <input
-                  type="text"
-                  value={toDo.task}
-                  onChange={(e) => updateHandler(e, index)}
-                  onKeyDown={(e) => handleKeyPress(e, index)}
-                ></input>
-              ) : (
-                <p key={index}>{toDo.task}</p>
-              )}
-              <div>
-                <button onClick={() => toggleEdit(index)} className="edit">
-                  {toDo.editing ? "Save" : "Edit"}
-                </button>
-                <button onClick={() => removeHandler(index)} className="delete">
-                  -
-                </button>
+          <form onSubmit={addHandler}>
+            <input
+              type="text"
+              value={inputText}
+              onChange={changeHandler}
+            ></input>
+            <button type="submit" className="submit">
+              +
+            </button>
+          </form>
+          {list.map((toDo, index) => {
+            return (
+              <div key={index} className="tasks">
+                {toDo.editing ? (
+                  <input
+                    type="text"
+                    value={toDo.task}
+                    id="singleInput"
+                    onChange={(e) => updateHandler(e, index)}
+                    onKeyDown={(e) => handleKeyPress(e, index)}
+                  ></input>
+                ) : (
+                  <p key={index}>{toDo.task}</p>
+                )}
+                <div>
+                  <button onClick={() => toggleEdit(index)} className="edit">
+                    {toDo.editing ? "Save" : "Edit"}
+                  </button>
+                  <button
+                    onClick={() => removeHandler(index)}
+                    className="delete"
+                  >
+                    -
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+        <button
+          onClick={toggleArchive}
+          id="archiveButton"
+          style={{ left: isTransformed ? "100%" : "0" }}
+        >
+          <span>{archiveVisibility ? "Hide Archive" : "Show Archive"}</span>
+        </button>
       </div>
-      <button onClick={toggleArchive} id="archiveButton">
-        <span>{archiveVisibility ? "Hide Archive" : "Show Archive"}</span>
-      </button>
       {archiveVisibility && (
         <div id="archive">
           <h2>ARCHIVED</h2>
